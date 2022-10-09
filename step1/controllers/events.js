@@ -1,5 +1,6 @@
 const { response } = require('express');
 const Event = require('../models/events');
+const tickets = require('../models/tickets');
 
 const addEvent = async(req, res = response) => {
 
@@ -100,4 +101,6 @@ const getEvents = async(req,res = response ) => {
         events
     });
 }
-module.exports = { addEvent, deleteEvent, getEvents }
+
+
+module.exports = { addEvent, deleteEvent, getEvents  }

@@ -2,18 +2,14 @@ const { Schema, model } = require('mongoose');
 
 // Creating the model of Event
 const TicketsSchema = Schema({
-    name: {
-        type: String,
+    event: {
+        type: Schema.Types.ObjectId,
+        ref: 'Event',
     },
     date:{
         type: Date,
         default: Date.now
-    },
-    event: {
-        type: Schema.Types.ObjectId,
-        ref: 'Event',
     }
-
 });
 
 TicketsSchema.method('toJSON', function() {

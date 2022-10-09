@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { reserveTicket , deleteTicket } = require('../controllers/tickets');
+const { reserveTicket , deleteTicket, getTickets } = require('../controllers/tickets');
 
 const router = Router();
 
@@ -9,6 +9,8 @@ router.get('/reserveticket', [
 
 router.get('/deleteticket', [
 ], deleteTicket);
+router.get('/tickets', [
+], getTickets);
 
 
 module.exports = router;

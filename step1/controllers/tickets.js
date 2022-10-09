@@ -1,5 +1,4 @@
 const { response } = require('express');
-const events = require('../models/events');
 const Event = require('../models/events');
 const Ticket = require('../models/tickets');
 
@@ -15,16 +14,6 @@ const reserveTicket = async(req, res = response) => {
         const event = queryObject.event;
         const availableTickets = await Event.findById(event);
         
-        // Finding the name in the database
-        /*const existNameEvent = await Event.findOne({ name: nameU });
-        // Checking if the name of the event is already in the database
-        if (existNameEvent) {
-            return res.status(400).json({
-                ok: false,
-                msg: 'Name of this event exists'
-            });
-        }*/
-
         if(availableTickets.nRemainTickets <= 0){
             return  res.status(400).json({
                 ok: false,
@@ -92,5 +81,17 @@ const deleteTicket = async(req, res = response) => {
 
 
 }
+const getTickets = async(req,res = response ) => {
+ 
+    const [ tickets ] = await Promise.all([
+        Ticket.find()
+    ]);
 
-module.exports = { reserveTicket, deleteTicket }
+    res.json({
+      tickets
+    });
+}
+
+
+
+module.exports = { reserveTicket, deleteTicket, getTickets}
