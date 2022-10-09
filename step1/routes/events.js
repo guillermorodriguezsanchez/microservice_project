@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { addEvent, deleteEvent, getEvents } = require('../controllers/events');
+const { addEvent, deleteEvent, getEvents, searchTickets } = require('../controllers/events');
 
 const router = Router();
 
@@ -12,6 +12,9 @@ router.get('/deleteevent', [
 
 router.get('/events', [
 ], getEvents);
+
+router.get('/searchtickets', [
+], searchTickets);
 
 
 module.exports = router;

@@ -102,5 +102,22 @@ const getEvents = async(req,res = response ) => {
     });
 }
 
+const searchTickets = async(req, res = response) => {
+    
+    const url = require('url');
+    const queryObject = url.parse(req.url, true).query;
 
-module.exports = { addEvent, deleteEvent, getEvents  }
+    
+    const tickets = await Event.find({
+        $or: [{ date: queryObject.date }],
+        $and: [{ nRemainTickets: { $gt: queryObject.tickets}}]
+    });
+
+    res.json({
+        results: tickets
+    });
+
+}
+
+
+module.exports = { addEvent, deleteEvent, getEvents, searchTickets }
