@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const tickets = require('./tickets');
 
 // Creating the model of Event
 const EventsSchema = Schema({
@@ -7,12 +8,20 @@ const EventsSchema = Schema({
         require: true
     },
     date:{
-        type: Date,
-        require: true
+        type: String,
+       
     },
     tickets:{
         type: Number,
-        require: true
+      
+    },
+    nSoldTickets:{
+        type: Number,
+        default : 0
+    },
+    nRemainTickets:{
+        type: Number,
+        default: 20
     }
 
 });

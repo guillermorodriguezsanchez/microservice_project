@@ -1,7 +1,8 @@
 const { response } = require('express');
 const Event = require('../models/events');
+const Ticket = require('../models/tickets');
 
-const addEvent = async(req, res = response) => {
+const reserveTicket = async(req, res = response) => {
 
     const url = require('url');
     const queryObject = url.parse(req.url, true).query;
@@ -9,13 +10,10 @@ const addEvent = async(req, res = response) => {
     try {
         
         // Save the name of the event
-        const name = queryObject.name;
-        const date = queryObject.date;
-        const tickets = queryObject.tickets;
-        const nRetickets = tickets;
-        console.log(name);
+        const nameU = queryObject.name;
+
         // Finding the name in the database
-        const existNameEvent = await Event.findOne({ name: name });
+        const existNameEvent = await Event.findOne({ name: nameU });
         // Checking if the name of the event is already in the database
         if (existNameEvent) {
             return res.status(400).json({
@@ -26,7 +24,7 @@ const addEvent = async(req, res = response) => {
         
         // If the event is not exists yet.
         // A new event is created 
-        const event = new Event({ name, date , tickets, nRetickets});
+        const event = new Event(queryObject);
 
         // Save it to the database
         await event.save();
@@ -47,7 +45,7 @@ const addEvent = async(req, res = response) => {
     }
 }
 
-const deleteEvent = async(req, res = response) => {
+const deleteTicket = async(req, res = response) => {
 
     const url = require('url');
     const queryObject = url.parse(req.url, true).query;
@@ -88,16 +86,4 @@ const deleteEvent = async(req, res = response) => {
 
 }
 
-const getEvents = async(req,res = response ) => {
- 
-    const [ events ] = await Promise.all([
-        Event.find()
-    ]);
-
-    console.log(events);
-
-    res.json({
-        events
-    });
-}
-module.exports = { addEvent, deleteEvent, getEvents }
+module.exports = { reserveTicket }
