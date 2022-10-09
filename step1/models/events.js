@@ -7,7 +7,7 @@ const EventsSchema = Schema({
         require: true
     },
     date:{
-        type: String,
+        type: Date,
         require: true
     },
     tickets:{
@@ -18,9 +18,9 @@ const EventsSchema = Schema({
 });
 
 EventsSchema.method('toJSON', function() {
-    const { __v, _id, ...object } = this.toObject();
+    const { __v, id, ...object } = this.toObject();
 
-    object.uid = _id;
+    object.uid = id;
     return object;
 })
 

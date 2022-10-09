@@ -44,5 +44,45 @@ const addEvent = async(req, res = response) => {
     }
 }
 
+const deleteEvent = async(req, res = response) => {
 
-module.exports = { addEvent}
+    const url = require('url');
+    const queryObject = url.parse(req.url, true).query;
+    const id = queryObject.id;
+
+    console.log(id);
+
+    try {
+
+        //const idExist = event.findOne(id);
+
+        /*if(!idExist){
+            return res.status(400).json({
+                ok: true,
+                msg: 'The event does not exist'
+            });
+        }*/
+
+        const eventD = await Event.findByIdAndRemove( id );
+
+            res.json({
+                ok: true,
+                msg: 'This event has been eliminated',
+            });
+
+        
+    } catch (error) {
+        console.log(error);
+
+        return res.json({
+            ok: false,
+            msg: 'Has been a problem with the method delete',
+            
+        });
+    }
+    
+
+
+}
+
+module.exports = { addEvent, deleteEvent }
