@@ -69,24 +69,13 @@ const deleteTicket = async(req, res = response) => {
     const queryObject = url.parse(req.url, true).query;
     const id = queryObject.id;
 
-    console.log(id);
-
     try {
 
-        //const idExist = event.findOne(id);
-
-        /*if(!idExist){
-            return res.status(400).json({
-                ok: true,
-                msg: 'The event does not exist'
-            });
-        }*/
-
-        const eventD = await Event.findByIdAndRemove( id );
+        const ticketD = await Ticket.findByIdAndRemove( id );
 
             res.json({
                 ok: true,
-                msg: 'This event has been eliminated',
+                msg: 'This ticket has been eliminated',
             });
 
         
@@ -104,4 +93,4 @@ const deleteTicket = async(req, res = response) => {
 
 }
 
-module.exports = { reserveTicket }
+module.exports = { reserveTicket, deleteTicket }
