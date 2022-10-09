@@ -21,7 +21,7 @@ const EventsSchema = Schema({
     },
     nRemainTickets:{
         type: Number,
-        default: 20
+        
     }
 
 });

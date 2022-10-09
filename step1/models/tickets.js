@@ -9,7 +9,7 @@ const TicketsSchema = Schema({
         type: Date,
         default: Date.now
     },
-    eventId: {
+    event: {
         type: Schema.Types.ObjectId,
         ref: 'Event',
     }

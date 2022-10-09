@@ -12,7 +12,7 @@ const addEvent = async(req, res = response) => {
         const name = queryObject.name;
         const date = queryObject.date;
         const tickets = queryObject.tickets;
-        const nRetickets = tickets;
+        const nRemainTickets = tickets;
         console.log(name);
         // Finding the name in the database
         const existNameEvent = await Event.findOne({ name: name });
@@ -26,7 +26,7 @@ const addEvent = async(req, res = response) => {
         
         // If the event is not exists yet.
         // A new event is created 
-        const event = new Event({ name, date , tickets, nRetickets});
+        const event = new Event({ name, date , tickets, nRemainTickets});
 
         // Save it to the database
         await event.save();
