@@ -1,8 +1,11 @@
 const { Schema, model } = require('mongoose');
-const tickets = require('./tickets');
 
 // Creating the model of Event
 const EventsSchema = Schema({
+    _id:{
+        type: String,
+        require: true
+    },
     name: {
         type: String,
         require: true
@@ -27,9 +30,7 @@ const EventsSchema = Schema({
 });
 
 EventsSchema.method('toJSON', function() {
-    const { __v, id, ...object } = this.toObject();
-
-    object.uid = id;
+    const { __v, ...object } = this.toObject();
     return object;
 })
 

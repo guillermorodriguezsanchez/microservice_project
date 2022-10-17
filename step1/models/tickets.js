@@ -2,8 +2,12 @@ const { Schema, model } = require('mongoose');
 
 // Creating the model of Event
 const TicketsSchema = Schema({
+    _id:{
+        type: String,
+        require: true
+    },
     event: {
-        type: Schema.Types.ObjectId,
+        type: String,
         ref: 'Event',
     },
     date:{
@@ -17,6 +21,7 @@ TicketsSchema.method('toJSON', function() {
 
     object.uid = id;
     return object;
+
 })
 
 module.exports = model('Ticket', TicketsSchema);

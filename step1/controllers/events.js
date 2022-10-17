@@ -1,6 +1,6 @@
 const { response } = require('express');
 const Event = require('../models/events');
-const tickets = require('../models/tickets');
+const {v4 : uuidv4} = require('uuid');
 
 const addEvent = async(req, res = response) => {
 
@@ -10,11 +10,11 @@ const addEvent = async(req, res = response) => {
     try {
         
         // Save the name of the event
+        const _id = uuidv4();
         const name = queryObject.name;
         const date = queryObject.date;
         const tickets = queryObject.tickets;
         const nRemainTickets = tickets;
-        console.log(name);
         // Finding the name in the database
         const existNameEvent = await Event.findOne({ name: name });
         // Checking if the name of the event is already in the database
@@ -27,7 +27,7 @@ const addEvent = async(req, res = response) => {
         
         // If the event is not exists yet.
         // A new event is created 
-        const event = new Event({ name, date , tickets, nRemainTickets});
+        const event = new Event({ _id, name, date , tickets, nRemainTickets});
 
         // Save it to the database
         await event.save();
@@ -36,7 +36,7 @@ const addEvent = async(req, res = response) => {
         res.json({
             ok: true,
             msg: 'addEvent',
-            id: event.id,
+            id: event._id,
         });
 
     } catch (error) {
@@ -57,15 +57,6 @@ const deleteEvent = async(req, res = response) => {
     console.log(id);
 
     try {
-
-        //const idExist = event.findOne(id);
-
-        /*if(!idExist){
-            return res.status(400).json({
-                ok: true,
-                msg: 'The event does not exist'
-            });
-        }*/
 
         const eventD = await Event.findByIdAndRemove( id );
 

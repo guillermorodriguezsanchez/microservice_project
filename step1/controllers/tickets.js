@@ -1,7 +1,7 @@
 const { response } = require('express');
 const Event = require('../models/events');
 const Ticket = require('../models/tickets');
-
+const {v4 : uuidv4} = require('uuid');
 const reserveTicket = async(req, res = response) => {
 
     const url = require('url');
@@ -10,9 +10,10 @@ const reserveTicket = async(req, res = response) => {
     try {
         
         // Save the name of the event
+        const _id = uuidv4();
         const nameU = queryObject.name;
         const event = queryObject.event;
-        const availableTickets = await Event.findById(event);
+        const availableTickets = await Event.findOne({_id:event});
         
         if(availableTickets.nRemainTickets <= 0){
             return  res.status(400).json({
@@ -23,11 +24,12 @@ const reserveTicket = async(req, res = response) => {
         
         // If the event is not exists yet.
         // A new event is created 
-        const ticket = new Ticket(queryObject);
-
+        const ticket = new Ticket({_id, event});
+                console.log(availableTickets); 
+                
         // Save it to the database
         await ticket.save();
-
+        
         await Event.findOneAndUpdate({ _id: event }, {
             $set:{
                 nSoldTickets: availableTickets.nSoldTickets+1, 
@@ -40,7 +42,7 @@ const reserveTicket = async(req, res = response) => {
         res.json({
             ok: true,
             msg: 'reserveTicket',
-            id: ticket.id,
+            _id: ticket._id,
         });
 
     } catch (error) {
@@ -61,6 +63,8 @@ const deleteTicket = async(req, res = response) => {
     try {
 
         const ticketD = await Ticket.findByIdAndRemove( id );
+
+        
 
             res.json({
                 ok: true,
