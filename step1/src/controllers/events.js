@@ -86,9 +86,11 @@ const getEvents = async(req,res = response ) => {
         Event.find()
     ]);
 
-    console.log(events);
+   
 
     res.json({
+        ok:true,
+        msg: 'All events',
         events
     });
 }
@@ -105,6 +107,7 @@ const searchTickets = async(req, res = response) => {
     });
 
     res.json({
+        ok:true,
         results: tickets
     });
 

@@ -18,6 +18,7 @@ app.get('/', (req,res) => {
     })
 });
 
+
 app.use('/', require('./src/routes/events'));
 app.use('/', require('./src//routes/tickets'));
 
@@ -25,3 +26,4 @@ app.listen(process.env.PORT, () => {
     console.log('Running in the port', process.env.PORT);
 });
 
+module.exports = app;

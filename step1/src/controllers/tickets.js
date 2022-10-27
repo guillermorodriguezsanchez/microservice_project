@@ -92,7 +92,9 @@ const getTickets = async(req,res = response ) => {
     ]);
 
     res.json({
-      tickets
+        ok:true,
+        msg: 'All tickets',
+        tickets
     });
 }
 
