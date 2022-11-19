@@ -1,18 +1,26 @@
 const { response } = require('express');
-const Event = require('../models/events');
+//const Event = require('../../eventsService/models/events');
 const Ticket = require('../models/tickets');
 const {v4 : uuidv4} = require('uuid');
+const { default: axios } = require('axios');
+
 const reserveTicket = async(req, res = response) => {
 
     const url = require('url');
     const queryObject = url.parse(req.url, true).query;
 
-    try {
+    /*try {
         
         // Save the name of the event
         const _id = uuidv4();
         const nameU = queryObject.name;
         const event = queryObject.event;
+
+        const availableTickets = async (req,res = response) => {
+            axios.get(`/events`)
+        }
+
+        const availableTickets = await 
         const availableTickets = await Event.findOne({_id:event});
         
         if(availableTickets.nRemainTickets <= 0){
@@ -51,7 +59,8 @@ const reserveTicket = async(req, res = response) => {
             ok: false,
             msg: 'Error trying to reserve a ticket.'
         });
-    }
+    }*/
+
 }
 
 const deleteTicket = async(req, res = response) => {

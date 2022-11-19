@@ -1,32 +1,5 @@
 {
-  "name": "step1",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "serve": "nodemon index.js",
-    "test": "cross-env NODE_ENV=test jest --testTimeout=5000",
-    "start": "node server.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "chai": "^4.3.6",
-    "cors": "^2.8.5",
-    "cross-env": "^7.0.3",
-    "docker-compose": "^0.23.17",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.1",
-    "mocha": "^10.1.0",
-    "mockgoose": "^8.0.4",
-    "mongoose": "^6.6.5",
-    "nodemon": "^2.0.20",
-    "uuid": "^9.0.0",
-    "uuidv4": "^6.2.13"
-  },
-  "devDependencies": {
-    "jest": "^29.2.2",
-    "supertest": "^6.3.1"
+    "axios": "^1.1.3"
   }
 }

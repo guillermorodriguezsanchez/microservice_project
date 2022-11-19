@@ -1,19 +1,40 @@
   version: "3.8"
   services: 
-        csd:
-            container_name: ticketsApp
+        csdevent:
+            container_name: eventService
             restart: always
-            build: .
+            build: src\eventsService
             ports: 
               - "5000:3000"
             links:
-              - mongo
+              - emongo
             volumes:
-              - .:/usr/src/app
-        mongo:
-            container_name: mymongodatabase
+              - .:/usr/src/eventsService
+        csdticket:
+            container_name: ticketService
+            restart: always
+            build: src\ticketsService
+            ports:
+              - "5001:3000"
+            links:
+              - tmongo
+            volumes:
+              - .:/usr/src/ticketsService
+
+        emongo:
+            container_name: emymongodatabase
             image: mongo
             volumes: 
-              - /data/mymongodatabase       
+              - /data/emymongodatabase       
+            ports:
+              - "27017:27017"
+
+        tmongo:
+            container_name: tmymongodatabase
+            image: mongo
+            volumes: 
+              - /data/tmymongodatabase       
             ports:
               - "27018:27017"
+        
+        

@@ -48,6 +48,38 @@ const addEvent = async(req, res = response) => {
     }
 }
 
+const getEventById = async (req, res = response) => {
+
+    const url = require('url');
+    const queryObject = url.parse(req.url, true).query;
+
+    const id = queryObject.id;
+    const name = queryObject.name;
+    
+    try {
+
+        const evenExist = await Event.findOne({ _id: id });
+        if(evenExist){
+            res.json({
+                ok:true,
+                msg:"An event has founded",
+                event : evenExist
+            })
+        }
+        
+    } catch (error) {
+        console.log(error);
+        res.json({
+            ok:false,
+            msg: "An error has appeared"
+        })
+    }
+
+
+}
+
+
+
 const deleteEvent = async(req, res = response) => {
 
     const url = require('url');
@@ -114,4 +146,4 @@ const searchTickets = async(req, res = response) => {
 }
 
 
-module.exports = { addEvent, deleteEvent, getEvents, searchTickets }
+module.exports = { addEvent, getEventById , deleteEvent, getEvents, searchTickets }
