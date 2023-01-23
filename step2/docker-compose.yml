@@ -1,40 +1,56 @@
-  version: "3.8"
-  services: 
-        csdevent:
-            container_name: eventService
-            restart: always
-            build: src\eventsService
-            ports: 
-              - "5000:3000"
-            links:
-              - emongo
-            volumes:
-              - .:/usr/src/eventsService
-        csdticket:
-            container_name: ticketService
-            restart: always
-            build: src\ticketsService
-            ports:
-              - "5001:3000"
-            links:
-              - tmongo
-            volumes:
-              - .:/usr/src/ticketsService
+version: "3.8"
+services:
+  csdevent:
+    container_name: eventService
+    restart: always
+    build: src\eventsService
+    ports: 
+      - "5000:3000"
+    links:
+      - emongo
+      - rabbitmq
+    volumes:
+      - .:/usr/src/eventsService
+  csdticket:
+    container_name: ticketService
+    restart: always
+    build: src\ticketsService
+    ports:
+      - "5001:3000"
+    links:
+      - tmongo
+      - rabbitmq
+    volumes:
+      - .:/usr/src/ticketsService
+  emongo:
+    container_name: emymongodatabase
+    image: mongo
+    volumes: 
+      - /data/emymongodatabase       
+    ports:
+      - "27017:27017"
+  tmongo:
+    container_name: tmymongodatabase
+    image: mongo
+    volumes: 
+      - /data/tmymongodatabase       
+    ports:
+      - "27018:27017"
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  caddy:
+    image: caddy:2.4.3-alpine
+    volumes:
+      - $PWD/Caddyfile:/etc/caddy/Caddyfile
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - csdevent
+      - csdticket
 
-        emongo:
-            container_name: emymongodatabase
-            image: mongo
-            volumes: 
-              - /data/emymongodatabase       
-            ports:
-              - "27017:27017"
-
-        tmongo:
-            container_name: tmymongodatabase
-            image: mongo
-            volumes: 
-              - /data/tmymongodatabase       
-            ports:
-              - "27018:27017"
-        
-        
+    

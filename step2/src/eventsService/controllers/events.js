@@ -1,11 +1,14 @@
 const { response } = require('express');
 const Event = require('../models/events');
 const {v4 : uuidv4} = require('uuid');
+const amqp = require('amqplib/callback_api');
+const { Connection, Channel, Message } = require('amqp-ts') ;
 
 const addEvent = async(req, res = response) => {
 
     const url = require('url');
     const queryObject = url.parse(req.url, true).query;
+
 
     try {
         
@@ -29,9 +32,27 @@ const addEvent = async(req, res = response) => {
         // A new event is created 
         const event = new Event({ _id, name, date , tickets, nRemainTickets});
 
+        const data = {
+            _id: event._id,
+            name: event.name
+        }
+
         // Save it to the database
         await event.save();
 
+        // Connect to RabbitMQ
+        amqp.connect('amqp://guest:guest@rabbitmq:5672', (err, conn) => {
+          if (err) throw new Error(err);
+          conn.createChannel((err, ch) => {
+            if (err) throw new Error(err);
+            const q = 'events_queue';
+            const eventData = { id: event._id, name: event.name, date: event.date, nRemainTickets: event.nRemainTickets };
+            // Send the event to the queue
+            ch.sendToQueue(q, Buffer.from(JSON.stringify(eventData)));
+            console.log(`Event ${event.name} sent to the queue`);
+          });
+        });
+          
         // Return a json with the id of the event
         res.json({
             ok: true,
@@ -90,7 +111,7 @@ const deleteEvent = async(req, res = response) => {
 
     try {
 
-        const eventD = await Event.findByIdAndRemove( id );
+        await Event.findByIdAndRemove( id );
 
             res.json({
                 ok: true,

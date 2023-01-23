@@ -1,0 +1,10 @@
+http://localhost {
+    reverse_proxy /events csdevent:3000 {
+
+    }
+
+    reverse_proxy /tickets csdticket:3000 {
+
+    }
+
+}
