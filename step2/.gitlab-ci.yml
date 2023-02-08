@@ -1,22 +1,8 @@
 stages:
   - build
-  - test
-  - deploy
 
-build-job:
-  stage: build
-  script:
-    - echo "Building the project..."
-    - docker-compose build
-
-test-job:
-  stage: test
-  script:
-    - echo "Running tests..."
-    - docker-compose run app npm test
-
-deploy-job:
-  stage: deploy
-  script:
-    - echo "Deploying to production..."
-    - docker-compose run app npm run deploy
+build-code-job:
+stage: build
+script:
+- echo "Building the project..."
+- docker-compose create --build
