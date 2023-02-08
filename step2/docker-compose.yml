@@ -9,6 +9,7 @@ services:
     links:
       - emongo
       - rabbitmq
+      - consul
     volumes:
       - .:/usr/src/eventsService
   csdticket:
@@ -20,6 +21,7 @@ services:
     links:
       - tmongo
       - rabbitmq
+      - consul
     volumes:
       - .:/usr/src/ticketsService
   emongo:
@@ -52,5 +54,11 @@ services:
     depends_on:
       - csdevent
       - csdticket
-
-    
+  consul:
+    image: consul:latest
+    ports:
+      - "8400:8400"
+      - "8500:8500"
+      - "8600:8600"
+      - "8600:8600/udp"
+    command: "agent -server -bootstrap-expect=1 -ui -client 0.0.0.0"
