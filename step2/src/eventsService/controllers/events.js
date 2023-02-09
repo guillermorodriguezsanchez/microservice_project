@@ -3,7 +3,9 @@ const Event = require('../models/events');
 const {v4 : uuidv4} = require('uuid');
 const amqp = require('amqplib/callback_api');
 const { Connection, Channel, Message } = require('amqp-ts') ;
+const Eventos = require('../rabbitConnect');
 
+const eventosrabbit = new Eventos();
 const addEvent = async(req, res = response) => {
 
     const url = require('url');
@@ -40,7 +42,7 @@ const addEvent = async(req, res = response) => {
         // Save it to the database
         await event.save();
 
-        // Connect to RabbitMQ
+        /*// Connect to RabbitMQ
         amqp.connect('amqp://guest:guest@rabbitmq:5672', (err, conn) => {
           if (err) throw new Error(err);
           conn.createChannel((err, ch) => {
@@ -51,8 +53,9 @@ const addEvent = async(req, res = response) => {
             ch.sendToQueue(q, Buffer.from(JSON.stringify(eventData)));
             console.log(`Event ${event.name} sent to the queue`);
           });
-        });
+        });*/
           
+        eventosrabbit.publishMessage(event);
         // Return a json with the id of the event
         res.json({
             ok: true,

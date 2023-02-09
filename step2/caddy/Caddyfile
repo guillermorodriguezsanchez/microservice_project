@@ -7,4 +7,12 @@ http://localhost {
 
     }
 
+    reverse_proxy /addevent csdevent:3000 {
+
+    }
+
+    reverse_proxy /reserveticket csdticket:3000 {
+
+    }
+
 }

@@ -8,7 +8,7 @@ const TicketsSchema = Schema({
     },
     event: {
         type: String,
-        ref: 'Event',
+        require: true,
     },
     date:{
         type: Date,

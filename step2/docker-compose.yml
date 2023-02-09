@@ -57,7 +57,9 @@ services:
   caddy:
     image: caddy:2.4.3-alpine
     volumes:
-      - $PWD/Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy/Caddyfile:/home/caddy/Caddyfile
+    command: "caddy run --config /home/caddy/Caddyfile"
+
     ports:
       - "80:80"
       - "443:443"
