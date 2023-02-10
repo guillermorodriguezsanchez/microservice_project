@@ -47,7 +47,7 @@ class Tickets {
       }
       var eventfromrabbit;
     
-      this.channel.consume("Events", (data) => {
+      await this.channel.consume("Events", (data) => {
         eventfromrabbit = JSON.parse(data.content.toString());
         console.log("nameEv:", eventfromrabbit.name);
         addEvent(eventfromrabbit.name, eventfromrabbit.date);

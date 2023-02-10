@@ -19,11 +19,10 @@ const reserveTicket = async(req, res = response) => {
 
     const event = queryObject.name;
 
-    
-
-    ticketRabbit.consumeMessages(event);
+    await ticketRabbit.consumeMessages(event);
     const nameD = await getEventByName(event);
     console.log("Event from get:", nameD);
+
     if(nameD === event){
         const ticket = new Ticket({_id, event});
 

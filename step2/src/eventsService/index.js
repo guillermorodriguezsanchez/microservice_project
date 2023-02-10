@@ -47,7 +47,6 @@ app.use('/', require('./routes/events'));
 //app.use('/', require('./src/ticketsService/routes/tickets'));
 
 
-
 app.listen(process.env.PORT, () => {
     console.log('Running in the port', process.env.PORT);
 });

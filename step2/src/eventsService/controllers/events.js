@@ -145,18 +145,23 @@ const consume = async() => {
 
 const getEvents = async(req,res = response ) => {
  
+
     const name = await consume();
     
-    console.log(name);
-    const availableTickets = await Event.findOne({name: name});
+    if(name){
 
-    await Event.findOneAndUpdate({ name: name }, {
-        $set:{
-            nSoldTickets: availableTickets.nSoldTickets+1, 
-            nRemainTickets: availableTickets.nRemainTickets-1
-        }
+        const availableTickets = await Event.findOne({name: name});
+
+        await Event.findOneAndUpdate({ name: name }, {
+            $set:{
+                nSoldTickets: availableTickets.nSoldTickets+1, 
+                nRemainTickets: availableTickets.nRemainTickets-1
+            }
          
-    })
+        })
+    }
+    
+    
 
     const [ events ] = await Promise.all([
         Event.find()
