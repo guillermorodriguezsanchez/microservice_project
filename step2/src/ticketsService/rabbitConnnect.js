@@ -1,4 +1,5 @@
 const amqp = require('amqplib');
+const { addEvent } = require('./controllers/events');
 
 
 //step 1 : Connect to the rabbitmq server
@@ -13,43 +14,59 @@ class Tickets {
       const connection = await amqp.connect('amqp://guest:guest@rabbitmq:5672');
       this.channel = await connection.createChannel();
     }
+
+    async createChannelT() {
+      const connectionT = await amqp.connect('amqp://guest:guest@rabbitmq:5672');
+      this.channelT = await connectionT.createChannel();
+      await  this.channelT.assertQueue("Tickets");
+    }
   
-    async publishMessage(routingkey , tickets) {
-      if (!this.channel) {
-        await this.createChannel();
+    
+
+    async publishMessage(evento) {
+      if (!this.channelT) {
+        await this.createChannelT();
       }
+
+      this.channelT.sendToQueue(
+        "Tickets",
+        Buffer.from(
+            evento
+        )
+    );
   
-      const exchangeName = config.rabbitMQ.exchangeName;
-      await this.channel.assertExchange(exchangeName, "direct");
-  
- 
-      await this.channel.publish(
-        exchangeName,
-        routingkey,
-        Buffer.from(JSON.stringify(tickets))
+      console.log(
+        `add new  Event is sent to exchange ${evento}`
       );
-  
     }
     
     async consumeMessages(name_event) {
+      console.log(name_event);
       if (!this.channel) {
         await this.createChannel();
       }
       var eventfromrabbit;
     
       this.channel.consume("Events", (data) => {
-        eventfromrabbit = JSON.parse(data.content);
-        this.processEvent(eventfromrabbit, name_event);
+        eventfromrabbit = JSON.parse(data.content.toString());
+        console.log("nameEv:", eventfromrabbit.name);
+        addEvent(eventfromrabbit.name, eventfromrabbit.date);
       });
+
+      
     }
-      processEvent(event, name_event) {
-        for (let i in event) {
-          if (name_event == i.name) {
-            console.log("event:",i.name);
-            return true;
-          }
+    
+    processEvent(event, name_event) {
+      for (let i in event) {
+        if (event[i].name == name_event) {
+          console.log(`event: ${event[i].name}`);
+          return true;
         }
       }
+      console.log(`Event with name ${name_event} not found`);
+      return false;
+    }
+    
   }
 
 

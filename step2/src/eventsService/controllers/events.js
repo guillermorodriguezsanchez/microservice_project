@@ -136,12 +136,33 @@ const deleteEvent = async(req, res = response) => {
 
 }
 
+const consume = async() => {
+    const name = await eventosrabbit.consumeMessages();
+    console.log("nameConsumido:",name)
+
+    return name;
+}
+
 const getEvents = async(req,res = response ) => {
  
+    const name = await consume();
+    
+    console.log(name);
+    const availableTickets = await Event.findOne({name: name});
+
+    await Event.findOneAndUpdate({ name: name }, {
+        $set:{
+            nSoldTickets: availableTickets.nSoldTickets+1, 
+            nRemainTickets: availableTickets.nRemainTickets-1
+        }
+         
+    })
+
     const [ events ] = await Promise.all([
         Event.find()
     ]);
 
+    
    
 
     res.json({
