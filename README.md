@@ -12,6 +12,7 @@ The web application should be able to perform the following tasks:
 - Calling http://localhost/deleteticket?id=(id) deletes the ticket with the specified id. If there is no ticket with that id, return a success message.
 - Calling http://localhost/tickets lists all tickets that were bought (id, event id, and date when it was sold).
 - Calling http://localhost/searchtickets?date=20221004&tickets=2 returns all events on the 4th of October with at least 2 tickets left.
+- The communication between services is done through RabbitMQ. Each service has its own Docker container, and they are all orchestrated using Consul. Caddy is used as the web server.
 ## Architecture
 The project uses a microservices architecture that consists of the following services:
 
@@ -22,7 +23,6 @@ The project uses a microservices architecture that consists of the following ser
 - deleteticket: Responsible for deleting tickets from the database.
 - gettickets: Responsible for fetching all tickets from the database.
 - searchtickets: Responsible for searching for events with available tickets based on a specific date and ticket number.
-The communication between services is done through RabbitMQ. Each service has its own Docker container, and they are all orchestrated using Consul. Caddy is used as the web server.
 
 ## DevOps Pipeline
 ### The DevOps Pipeline for this project includes the following steps:
@@ -33,6 +33,8 @@ Unit tests have been added to each service to ensure that the functions return t
 
 ## Folders
 
-There are two folders:
+### There are two folders:
 - Folder 1 (step1) : In this one you can see the project with Unit Tests, Docker all in one with one database without using RabbitMQ, Caddy or Consul.
 - Folder 2 (step2) : In this one you will see the final project with every parts.
+
+
